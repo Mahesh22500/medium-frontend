@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link,Navigate } from "react-router-dom";
 import { createUserAsync } from "../reducers/user";
 
 export default function Signup() {
@@ -25,11 +25,9 @@ export default function Signup() {
 
   console.log("user in signup ",user)
 
-  const navigate = useNavigate();
 
-  if (user) {
-    navigate("/");
-  }
+  if (user)
+    return <Navigate to="/"></Navigate>
 
   return (
     <>

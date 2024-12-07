@@ -1,9 +1,9 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUserAsync } from "../reducers/user";
 
-export default function Login() {
+export default function     Login() {
 
 
   const [userInput,setUserInput] = useState({
@@ -24,11 +24,10 @@ export default function Login() {
 
   const user = useSelector((state) => state.user.loggedInUser);
 
-  const navigate = useNavigate();
+  
 
-  if (user) {
-    navigate("/");
-  }
+  if (user)
+    return <Navigate to="/"></Navigate>
 
   
   return (
