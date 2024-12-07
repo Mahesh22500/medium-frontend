@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const baseUrl = "http://localhost:3000/post";
+const baseUrl = "https://medium-backend-alpha.vercel.app/post";
 
 const initialState = {
   posts: [],

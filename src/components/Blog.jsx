@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 
 const usePost = (id)=>{
 
-    const baseUrl = "http://localhost:3000/post"
+    const baseUrl = "https://medium-backend-alpha.vercel.app/post"
     const [post,setPost] = useState(null);
     
 
