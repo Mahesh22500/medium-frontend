@@ -4,7 +4,7 @@ import About from "./About";
 import LabelledInput from "./LabelledInput";
 import { BlueButton, RedButton } from "./StyledButtons";
 import UserSkills from "./UserSkills";
-import UserExperience from "./userExperience";
+import UserExperience from "./UserExperience";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAsync } from "../reducers/user";
 const UserProfile = () => {
