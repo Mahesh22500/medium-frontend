@@ -1,7 +1,7 @@
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserAsync } from "../reducers/user";
+import { loginUserAsync } from "../reducers/auth";
 
 export default function     Login() {
 
@@ -20,9 +20,12 @@ export default function     Login() {
     e.preventDefault();
 
     dispatch(loginUserAsync(userInput));
+    
   };
 
-  const user = useSelector((state) => state.user.loggedInUser);
+  const user = useSelector((state) => state.auth.loggedInUser);
+
+  // console.log("user in login page ",user);
 
   
 

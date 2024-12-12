@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link,Navigate } from "react-router-dom";
-import { createUserAsync } from "../reducers/user";
+import { createUserAsync } from "../reducers/auth";
 
 export default function Signup() {
   const [userInput, setUserInput] = useState({

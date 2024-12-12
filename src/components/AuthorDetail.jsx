@@ -13,7 +13,7 @@ const AuthorDetail = ({author}) => {
         <div className="font-semibold text-2xl max-w-md ">
           {
             // eslint-disable-next-line react/prop-types
-            author.job || `“Vel ultricies morbi odio facilisi ultrices accumsan donec lacus
+            author.description || `“Vel ultricies morbi odio facilisi ultrices accumsan donec lacus
             purus. Lectus nibh ullamcorper ac dictum justo in euismod. Risus
             aenean ut elit massa. In amet aliquet eget cras. Sem volutpat enim
             tristique.”`
@@ -30,11 +30,11 @@ const AuthorDetail = ({author}) => {
           </div>
           <div className="ml-4">
              {/* eslint-disable-next-line react/prop-types */}
-            <div className="font-semibold text-l ">{author.firstName} {author.secondName}</div>
+            <div className="font-semibold text-l ">{author.firstName} {author.lastName}</div>
             
              {/* eslint-disable-next-line react/prop-types */}
             <div className="font-extralight antialiased ">@{author.username}</div>
-          </div>
+          </div>  
         </div>
       </div>
       </div>

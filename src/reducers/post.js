@@ -4,8 +4,12 @@ const baseUrl = "https://medium-backend-alpha.vercel.app/post";
 
 const initialState = {
   posts: [],
+  userPosts:[],
   loading: false,
 };
+
+
+// create a post 
 
 export const createPostAsync = createAsyncThunk(
   "post/createPost",
@@ -21,8 +25,8 @@ export const createPostAsync = createAsyncThunk(
     });
 
     if (response.ok) {
-      const post = await response.json();
-      return post;
+      const {data} = await response.json();
+      return data;
     } else {
       const error = await response.json();
 
@@ -31,6 +35,8 @@ export const createPostAsync = createAsyncThunk(
   }
 );
 
+
+// get all posts 
 export const getAllPostsAsync = createAsyncThunk(
   "post/getAllPosts",
   async () => {
@@ -44,8 +50,8 @@ export const getAllPostsAsync = createAsyncThunk(
     });
 
     if (response.ok) {
-      const { posts } = await response.json();
-      return posts;
+      const { data } = await response.json();
+      return data;
     } else {
       const error = await response.json();
 
@@ -54,6 +60,32 @@ export const getAllPostsAsync = createAsyncThunk(
   }
 );
 
+
+// get all posts of a user 
+export const getUserPostsAsync  = createAsyncThunk(
+  "post/getUserPosts",
+  async (userId) => {
+
+    const queryUrl  = baseUrl + '?user=' + userId;
+    const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+
+    if (response.ok) {
+      const { data } = await response.json();
+      return data;
+    } else {
+      const error = await response.json();
+
+      throw error;
+    }
+  }
+);
+
+// update a post 
 export const updatePostAsync = createAsyncThunk(
   "post/updatePost",
   async (postInput) => {
@@ -63,8 +95,8 @@ export const updatePostAsync = createAsyncThunk(
     });
 
     if (response.ok) {
-      const post = await response.json();
-      return post;
+      const {data} = await response.json();
+      return data;
     } else {
       const error = await response.json();
 
@@ -73,6 +105,9 @@ export const updatePostAsync = createAsyncThunk(
   }
 );
 
+
+
+// delete a post 
 export const deletePostAsync = createAsyncThunk(
   "post/deletePost",
   async (postId) => {
@@ -81,8 +116,8 @@ export const deletePostAsync = createAsyncThunk(
     });
 
     if (response.ok) {
-      const post = await response.json();
-      return post;
+      const {message} = await response.json();
+      return message;
     } else {
       const error = await response.json();
 
@@ -100,6 +135,7 @@ const postSlice = createSlice({
       .addCase(createPostAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.posts.push(action.payload);
+        state.userPosts.push(action.payload);
       })
       .addCase(createPostAsync.pending, (state) => {
         state.loading = true;
@@ -119,12 +155,30 @@ const postSlice = createSlice({
         state.loading = false;
       })
 
+      .addCase(getUserPostsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userPosts= action.payload;
+      })
+      .addCase(getUserPostsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUserPostsAsync.rejected, (state) => {
+        state.loading = false;
+      })
       .addCase(updatePostAsync.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.posts.findIndex(
           (post) => post.id === action.payload.id
         );
         state.posts[index] = action.payload;
+        
+        const otherIndex  = state.userPosts.findIndex(
+          (post) => post.id === action.payload.id
+        );
+        state.userPosts[otherIndex] = action.payload;
+        
+       
+       
       })
       .addCase(updatePostAsync.pending, (state) => {
         state.loading = true;
@@ -139,6 +193,11 @@ const postSlice = createSlice({
           (post) => post.id !== action.payload.id
         );
         state.posts = newPosts;
+        
+        const newUserPosts = state.userPosts.filter(
+          (post) => post.id !== action.payload.id
+        );
+        state.posts = newUserPosts;
       })
       .addCase(deletePostAsync.pending, (state) => {
         state.loading = true;

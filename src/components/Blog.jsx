@@ -18,8 +18,8 @@ const usePost = (id)=>{
                 "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
               },
         } ).then( async res=>{
-            const {post} = await res.json();
-            setPost(post);
+            const {data} = await res.json();
+            setPost(data);
         })
 
     },[])
@@ -32,6 +32,7 @@ export default function Blog() {
 
     const {id} = useParams();
 
+    
     console.log("id",id)
 
     const post = usePost(id);
@@ -71,14 +72,14 @@ export default function Blog() {
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
             <div className="lg:max-w-lg">
-              <p className="text-base/7 font-semibold text-indigo-600">Deploy faster</p>
+              <p className="text-base/7 font-semibold text-indigo-600">{post.category}</p>
               <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
                 { post.title || "A better workflow"}
               </h1>
               <p className="mt-6 text-xl/8 text-gray-700">
                 {
                      
-            post.description ||         `Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam
+            post.content ||         `Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam
                 eget aliquam. Quisque id at vitae feugiat egestas.`
                 }
               </p>

@@ -11,6 +11,8 @@ import "./App.css";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import Protected from "./components/Protected";
+import UserProfile from "./components/UserProfile";
+import SearchBar from "./components/SearchBar";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +47,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/userBlogs",
+    path: "/user-blogs",
     element: (
       <>
         <Protected>
@@ -67,9 +69,32 @@ const router = createBrowserRouter([
       </>
     ),
   },
+  {
+    path: "/user-profile",
+    element: (
+      <>
+        <Protected>
+          <Navbar></Navbar>
+          <UserProfile></UserProfile>,
+        </Protected>
+      </>
+    ),
+  },
+
+  {
+    path: "/searchbar",
+    element: (
+      <>
+        <Protected>
+          <Navbar></Navbar>
+
+          <SearchBar></SearchBar>
+        </Protected>
+      </>
+    ),
+  },
 ]);
 function App() {
-
   return (
     <>
       <Provider store={store}>
