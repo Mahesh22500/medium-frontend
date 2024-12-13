@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   createUserExperienceAsync,
   deleteUserExperienceAsync,
-  getAllExperiencesAsync,
+  getExperiencesByUserAsync,
 } from "../reducers/user";
 import { ColorRing } from "react-loader-spinner";
 
@@ -18,11 +18,14 @@ const MyExperience = () => {
 
   const user = useSelector((state) => state.user.currentUser);
 
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllExperiencesAsync());
+    dispatch(getExperiencesByUserAsync(user.id));
   }, []);
+
+
 
   const [experience, setExperience] = useState({
     company: "",

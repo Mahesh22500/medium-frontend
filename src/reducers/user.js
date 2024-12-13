@@ -61,6 +61,31 @@ export const getAllExperiencesAsync = createAsyncThunk(
   }
 );
 
+
+// get all experiences of a user 
+export const getExperiencesByUserAsync = createAsyncThunk(
+  "user/getExperiencesByUser",
+  async (userId) => {
+    const baseUrl = BASE_URL + "experience?user=" + userId;
+
+    const response = await fetch(baseUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+
+    if (response.ok) {
+      const { data } = await response.json();
+      return data;
+    } else {
+      const { message } = await response.json();
+      throw message;
+    }
+  }
+);
+
+
 // delete a user experience 
 
 export const deleteUserExperienceAsync  = createAsyncThunk(
@@ -239,6 +264,13 @@ const userSlice = createSlice({
         state.loading = true;
       })
       .addCase(getAllExperiencesAsync.fulfilled, (state, action) => {
+        state.userExperiences = action.payload;
+        state.loading = false;
+      })
+      .addCase(getExperiencesByUserAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getExperiencesByUserAsync.fulfilled, (state, action) => {
         state.userExperiences = action.payload;
         state.loading = false;
       })

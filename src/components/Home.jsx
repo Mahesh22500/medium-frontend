@@ -98,7 +98,7 @@ export default function Home() {
                   <p className="font-semibold text-gray-900">
                     <Link to={`/profile/${post.author.id}`}>
                       <span className="absolute inset-0" />
-                      {post.author.username}
+                      {post.author.firstName}
                     </Link>
                   </p>
                   <p className="text-gray-600">{post.author.role || "Software Engineer"}</p>
