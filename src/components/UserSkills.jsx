@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 const UserSkills = () => {
-  const userSkills = useSelector((state) => state.user.currentUser.skills);
+  const userSkills = useSelector((state) => state.user.generalUser.skills);
   console.log("userSkills",userSkills)
 
   const userLoading = useSelector(state=>state.user.loading);

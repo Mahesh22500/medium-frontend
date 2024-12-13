@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getGeneralUserAsync } from "../reducers/user";
 import { useParams } from "react-router-dom";
@@ -16,25 +16,25 @@ const UserProfile = () => {
     dispatch(getGeneralUserAsync(id));
   }, []);
 
+  const user = useSelector((state) => state.user.generalUser);
 
-  const user = useSelector(state=>state.user.generalUser);
+  console.log("id:", id);
+  console.log("user:", user);
 
-  console.log("id:",id);
-  console.log("user:",user);
-
-
-  if(!user)
-    return <div>
-  <ColorRing
-        visible={true}
-        height="80"
-        width="80"
-        ariaLabel="color-ring-loading"
-        wrapperStyle={{}}
-        wrapperClass="color-ring-wrapper"
-        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+  if (!user)
+    return (
+      <div>
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="color-ring-loading"
+          wrapperStyle={{}}
+          wrapperClass="color-ring-wrapper"
+          colors={["#e15b64", "#f47e60", "#f8b26a", "#abbd81", "#849b87"]}
         />
-    </div>
+      </div>
+    );
 
   return (
     <div>
@@ -45,8 +45,9 @@ const UserProfile = () => {
               <div className="w-full flex flex-row-reverse"></div>
               <img
                 src={
-                  user.imageUrl ||
-                  `https://randomuser.me/api/portraits/men/94.jpg`
+                  user && user.imageUrl
+                    ? user.imageUrl
+                    : `https://as2.ftcdn.net/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.webp`
                 }
                 className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
               />

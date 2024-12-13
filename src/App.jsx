@@ -13,36 +13,53 @@ import Protected from "./components/Protected";
 import SearchBar from "./components/SearchBar";
 import MyProfile from "./components/MyProfile";
 import UserProfile from "./components/UserProfile";
+import Logout from "./components/Logout";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <>
-        <Protected>
           <Navbar></Navbar>
           <Home></Home>
-        </Protected>
       </>
     ),
   },
   {
     path: "/signup",
-    element: <Signup></Signup>,
+    element: (
+      <>
+      <Navbar></Navbar>
+      <Signup></Signup>
+      
+      </>
+    ),
   },
   {
     path: "/login",
-    element: <Login></Login>,
+    element: (
+      <>
+      <Navbar></Navbar>
+      <Login></Login>
+      </>
+    ),
+  },
+  {
+    path: "/logout",
+    element: (
+      <>
+      <Navbar></Navbar>
+      <Logout></Logout>
+      </>
+    ),
   },
   {
     path: "/blog/:id",
 
     element: (
       <>
-        <Protected>
           <Navbar></Navbar>
           <Blog></Blog>,
-        </Protected>
       </>
     ),
   },
@@ -98,6 +115,9 @@ const router = createBrowserRouter([
     path: "/profile/:id",
     element: (
       <>
+      <Navbar>
+
+      </Navbar>
       <UserProfile></UserProfile>
       </>
     ),

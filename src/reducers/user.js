@@ -184,7 +184,11 @@ export const deleteUserAsync = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    logOutUser:(state)=>{
+      state.currentUser = null;
+    }
+  },
   extraReducers: (builder) =>
     builder
       .addCase(getUserAsync.fulfilled, (state, action) => {

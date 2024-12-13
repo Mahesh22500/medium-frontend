@@ -25,7 +25,7 @@ const AuthorDetail = ({author}) => {
           <div>
             <img
               className=" mt-2 w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-              src={ author.imageUrl || `https://www.picclickimg.com/C8IAAOSw~WtbmZmg/Pikachu-Gaming-Mascot-Logo-Game-Gamer-Car-Decal.webp`}
+              src={ author && author.imageUrl ? author.imageUrl :`https://as2.ftcdn.net/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.webp`}
               alt=""
             />
           </div>
