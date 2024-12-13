@@ -73,8 +73,8 @@ const MyProfile = () => {
                 </div>
                 <img
                   src={
-                    user.imageUrl ||
-                    `https://randomuser.me/api/portraits/men/94.jpg`
+                  user &&  user.imageUrl ? user.imageUrl :
+                  `https://as2.ftcdn.net/jpg/02/29/75/83/1000_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.webp`
                   }
                   className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
                 />
