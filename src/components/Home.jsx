@@ -64,7 +64,7 @@ export default function Home() {
           {posts && posts.map((post) => (
             <article
               key={post.id}
-              className="flex max-w-xl flex-col items-start justify-between"
+              className="flex border-4   border-gray-200 rounded-lg p-10  max-w-xl flex-col items-start justify-between"
             >
               <div className="flex items-center gap-x-4 text-xs">
                 <time dateTime={post.createdAt} className="text-gray-500">
