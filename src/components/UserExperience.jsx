@@ -1,10 +1,9 @@
-import {  useSelector } from "react-redux";
+/* eslint-disable react/prop-types */
 
 
-const UserExperience = () => {
+const UserExperience = ({user}) => {
 
 
-  const user = useSelector((state) => state.user.generalUser);
 
 
 

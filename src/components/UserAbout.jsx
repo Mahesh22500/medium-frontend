@@ -1,7 +1,6 @@
-import { useSelector } from "react-redux";
-const UserAbout= () => {
+/* eslint-disable react/prop-types */
+const UserAbout= ({user}) => {
 
-  const user = useSelector(state=>state.user.generalUser);
   return (
     <div>
         <h2 className="text-xl font-bold mb-4 ">About Me</h2>

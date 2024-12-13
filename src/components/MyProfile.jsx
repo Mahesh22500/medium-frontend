@@ -140,14 +140,14 @@ const MyProfile = () => {
                 </form>
               )}
               <hr className="my-6 border-t border-gray-300" />
-              <MySkills></MySkills>
+              <MySkills user={user}></MySkills>
             </div>
 
             <div className="">
               <div className="bg-white shadow rounded-lg p-6">
-                <MyAbout></MyAbout>
+                <MyAbout user={user}></MyAbout>
 
-                <MyExperience></MyExperience>
+                <MyExperience user={user}></MyExperience>
               </div>
             </div>
           </div>

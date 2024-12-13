@@ -18,12 +18,11 @@ const UserProfile = () => {
 
   const user = useSelector((state) => state.user.generalUser);
 
-  console.log("id:", id);
-  console.log("user:", user);
+  const loading = useSelector(state=>state.user.loading)
 
-  if (!user)
+  if (!user || loading)
     return (
-      <div>
+      <div className="flex justify-center items-center">
         <ColorRing
           visible={true}
           height="80"
@@ -59,14 +58,14 @@ const UserProfile = () => {
               </p>
             </div>
             <hr className="my-6 border-t border-gray-300" />
-            <UserSkills></UserSkills>
+            <UserSkills user={user}></UserSkills>
           </div>
 
           <div className="">
             <div className="bg-white shadow rounded-lg p-6">
-              <UserAbout></UserAbout>
+              <UserAbout user={user}></UserAbout>
 
-              <UserExperience></UserExperience>
+              <UserExperience user={user}></UserExperience>
             </div>
           </div>
         </div>

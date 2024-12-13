@@ -1,14 +1,7 @@
-import { useSelector } from "react-redux";
+/* eslint-disable react/prop-types */
 
-const UserSkills = () => {
-  const userSkills = useSelector((state) => state.user.generalUser.skills);
-  console.log("userSkills",userSkills)
-
-  const userLoading = useSelector(state=>state.user.loading);
-
-  if(userLoading)
-    return <div>loading...</div>
-
+const UserSkills = ({user}) => {
+  
   return (
     <div>
       <div className="flex flex-col">
@@ -17,8 +10,8 @@ const UserSkills = () => {
         </span>
 
         <div className="flex mt-4 gap-2">
-        {userSkills &&
-          userSkills.map((skill, index) => (
+        {user &&
+          user.skills.map((skill, index) => (
             <div className="border-4 px-2 rounded-md border-gray-200 " key={index}>
               {skill}{" "}
             </div>
