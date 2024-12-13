@@ -5,14 +5,14 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import Blog from "./components/Blog";
 import Navbar from "./components/Navbar";
-import UserBlogs from "./components/UserBlogs";
+import MyBlogs from "./components/MyBlogs";
 import AddBlogForm from "./components/AddBlogForm";
-import "./App.css";
 import { Provider } from "react-redux";
 import { store } from "./store";
 import Protected from "./components/Protected";
-import UserProfile from "./components/UserProfile";
 import SearchBar from "./components/SearchBar";
+import MyProfile from "./components/MyProfile";
+import UserProfile from "./components/UserProfile";
 
 const router = createBrowserRouter([
   {
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
         <Protected>
           <Navbar></Navbar>
 
-          <UserBlogs></UserBlogs>
+          <MyBlogs></MyBlogs>
         </Protected>
       </>
     ),
@@ -70,12 +70,12 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/user-profile",
+    path: "/my-profile",
     element: (
       <>
         <Protected>
           <Navbar></Navbar>
-          <UserProfile></UserProfile>,
+          <MyProfile></MyProfile>,
         </Protected>
       </>
     ),
@@ -93,6 +93,16 @@ const router = createBrowserRouter([
       </>
     ),
   },
+
+  {
+    path: "/profile/:id",
+    element: (
+      <>
+      <UserProfile></UserProfile>
+      </>
+    ),
+  },
+  
 ]);
 function App() {
   return (

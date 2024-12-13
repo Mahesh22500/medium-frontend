@@ -1,38 +1,55 @@
 import { Link, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUserAsync } from "../reducers/auth";
+import {  loginUserAsync } from "../reducers/auth";
+import { clearErrorMessages } from "../reducers/auth";
+import { ColorRing } from "react-loader-spinner";
 
-export default function     Login() {
 
-
-  const [userInput,setUserInput] = useState({
-    email:"",
-    password:""
-  })
-
-  
+export default function Login() {
+  const [userInput, setUserInput] = useState({
+    email: "",
+    password: "",
+  });
 
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-    console.log("Inside handleSubmit")
+    console.log("Inside handleSubmit");
     e.preventDefault();
 
     dispatch(loginUserAsync(userInput));
-    
   };
 
   const user = useSelector((state) => state.auth.loggedInUser);
 
   // console.log("user in login page ",user);
 
-  
-
-  if (user)
-    return <Navigate to="/"></Navigate>
+  const errorMessage = useSelector((state) => state.auth.errorMessage);
+  const loading = useSelector((state) => state.auth.loading);
 
   
+  
+  if (errorMessage) {
+    dispatch(clearErrorMessages())
+    setTimeout(() => {
+      alert(errorMessage);
+      
+    }, 1000);
+  }
+  if (loading) return <div className="flex justify-center items-center">
+    <ColorRing
+  visible={true}
+  height="80"
+  width="80"
+  ariaLabel="color-ring-loading"
+  wrapperStyle={{}}
+  wrapperClass="color-ring-wrapper"
+  colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+  />
+  </div>;
+  
+  if (user) return <Navigate to="/"></Navigate>;
   return (
     <>
       {/*
@@ -56,11 +73,7 @@ export default function     Login() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form
-            action="#"
-            method="POST"
-            className="space-y-6"
-          >
+          <form action="#" method="POST" className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -116,7 +129,7 @@ export default function     Login() {
 
             <div>
               <button
-              onClick = {handleSubmit}
+                onClick={handleSubmit}
                 type="submit"
                 className="flex w-full justify-center rounded-md bg-black -600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-black -500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black -600"
               >

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 
 
 // eslint-disable-next-line react/prop-types
@@ -24,7 +25,7 @@ const AuthorDetail = ({author}) => {
           <div>
             <img
               className=" mt-2 w-10 h-10 p-1 rounded-full ring-2 ring-gray-300 dark:ring-gray-500"
-              src="https://www.picclickimg.com/C8IAAOSw~WtbmZmg/Pikachu-Gaming-Mascot-Logo-Game-Gamer-Car-Decal.webp"
+              src={ author.imageUrl || `https://www.picclickimg.com/C8IAAOSw~WtbmZmg/Pikachu-Gaming-Mascot-Logo-Game-Gamer-Car-Decal.webp`}
               alt=""
             />
           </div>

@@ -1,45 +1,36 @@
-import AuthorDetail from './AuthorDetail'
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react';
-
-
-const usePost = (id)=>{
-
-    const baseUrl = "https://medium-backend-alpha.vercel.app/post"
-    const [post,setPost] = useState(null);
-    
-
-    useEffect(()=>{
-
-        const queryUrl = baseUrl + '/' + id;
-        fetch(queryUrl,{
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
-              },
-        } ).then( async res=>{
-            const {data} = await res.json();
-            setPost(data);
-        })
-
-    },[])
-
-
-    return post
-}
+import AuthorDetail from "./AuthorDetail";
+import { Link, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getPostByIdAsync } from "../reducers/post";
+import { ColorRing } from "react-loader-spinner";
 
 export default function Blog() {
+  const { id } = useParams();
 
-    const {id} = useParams();
+  const dispatch = useDispatch();
 
-    
-    console.log("id",id)
+  useEffect(() => {
+    dispatch(getPostByIdAsync(id));
+  }, []);
 
-    const post = usePost(id);
+  const post = useSelector((state) => state.post.currentPost);
 
-    console.log("post", post);
+  const loading = useSelector((state) => state.post.loading);
 
-    if(post)
+  if(!post || loading)
+    return <div><div className="flex items-center justify-center">
+          <ColorRing
+      visible={true}
+      height="80"
+      width="80"
+      ariaLabel="color-ring-loading"
+      wrapperStyle={{}}
+      wrapperClass="color-ring-wrapper"
+      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+      />
+        </div></div>
+
   return (
     <div className="relative isolate overflow-hidden bg-white px-6 py-24 sm:py-32 lg:overflow-visible lg:px-0">
       <div className="absolute inset-0 -z-10 overflow-hidden">
@@ -65,28 +56,32 @@ export default function Blog() {
               strokeWidth={0}
             />
           </svg>
-          <rect fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)" width="100%" height="100%" strokeWidth={0} />
+          <rect
+            fill="url(#e813992c-7d03-4cc4-a2bd-151760b470a0)"
+            width="100%"
+            height="100%"
+            strokeWidth={0}
+          />
         </svg>
       </div>
       <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-2 lg:items-start lg:gap-y-10">
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
             <div className="lg:max-w-lg">
-              <p className="text-base/7 font-semibold text-indigo-600">{post.category}</p>
+              <p className="text-base/7 font-semibold text-indigo-600">
+                {post.category}
+              </p>
               <h1 className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
-                { post.title || "A better workflow"}
+                {post.title || "A better workflow"}
               </h1>
               <p className="mt-6 text-xl/8 text-gray-700">
-                {
-                     
-            post.content ||         `Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam
-                eget aliquam. Quisque id at vitae feugiat egestas.`
-                }
+                {post.content ||
+                  `Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi, nibh dui, diam
+                eget aliquam. Quisque id at vitae feugiat egestas.`}
               </p>
             </div>
           </div>
         </div>
-
 
         <div className="-ml-12 -mt-12 p-12 lg:sticky lg:top-4 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:overflow-hidden">
           {/* <img
@@ -94,28 +89,25 @@ export default function Blog() {
             src="https://tailwindui.com/plus/img/component-images/dark-project-app-screenshot.png"
             className="w-[48rem] max-w-none rounded-xl bg-gray-900 shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
           /> */}
-<AuthorDetail author = {post.author}></AuthorDetail>
-
-          
+          <Link to={`/profile/${post.authorId}`}>
+            <AuthorDetail author={post.author}></AuthorDetail>
+          </Link>
         </div>
         <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2 lg:mx-auto lg:grid lg:w-full lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
           <div className="lg:pr-4">
             <div className="max-w-xl text-base/7 text-gray-700 lg:max-w-lg">
-              <p>{
-                post.content || `
+              <p>
+                {post.content ||
+                  `
                 Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet
                 vitae sed turpis id. Id dolor praesent donec est. Odio penatibus risus viverra tellus varius sit neque
                 erat velit. Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris
-                semper sed amet vitae sed turpis id.`
-                }
+                semper sed amet vitae sed turpis id.`}
               </p>
-
-     
-
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

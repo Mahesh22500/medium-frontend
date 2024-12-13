@@ -1,11 +1,14 @@
 
+import { BASE_URL } from "../constants";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-const baseUrl = "https://medium-backend-alpha.vercel.app/auth"
+// const baseUrl = "https://medium-backend-alpha.vercel.app/auth"
+const baseUrl  = BASE_URL + 'auth'
 
 
 const initialState = {
     loggedInUser:null,
-    loading :false
+    loading :false,
+    errorMessage:null,
 }
 
 export const createUserAsync = createAsyncThunk(
@@ -26,7 +29,8 @@ export const createUserAsync = createAsyncThunk(
   
         return data;
       } else {
-        throw { message: "error" };
+        const {message} = await response.json();
+        throw message;
       }
     }
   );
@@ -34,7 +38,11 @@ export const createUserAsync = createAsyncThunk(
   export const loginUserAsync = createAsyncThunk(
     "auth/loginUser",
     async (userInput) => {
-      const response = await fetch(baseUrl + "/signin", {
+      console.log("baseUrl",baseUrl);
+      const queryUrl = baseUrl + "/signin"
+      console.log("queryUrl",queryUrl);
+
+      const response = await fetch(queryUrl, {
         method: "POST",
         body: JSON.stringify({
           ...userInput,
@@ -49,7 +57,8 @@ export const createUserAsync = createAsyncThunk(
   
         return data;
       } else {
-        throw { message: "error" };
+        const {message} = await response.json();
+        throw {message};
       }
     }
   );
@@ -64,6 +73,10 @@ export const createUserAsync = createAsyncThunk(
     initialState,
     reducers:{
 
+      clearErrorMessages:(state)=>{
+        console.log("clear errors")
+        state.errorMessage = null;
+      }
     },
     extraReducers: (builder) => {
         builder
@@ -75,6 +88,11 @@ export const createUserAsync = createAsyncThunk(
             console.log("action payload create user ", action.payload);
             state.loggedInUser = action.payload;
           })
+          .addCase(createUserAsync.rejected, (state, action) => {
+            state.loading = false;
+            state.errorMessage = action.error.message;
+
+          })
           .addCase(loginUserAsync.pending, (state) => {
             state.loading = true;
           })
@@ -83,9 +101,15 @@ export const createUserAsync = createAsyncThunk(
             console.log("action payload in login ",action.payload)
             state.loggedInUser = action.payload;
           })
+          .addCase(loginUserAsync.rejected, (state, action) => {
+            state.loading = false;
+            state.errorMessage = action.error.message;
+
+          })
           
       },
     
   })
 
   export const authReducer = authSlice.reducer
+  export  const clearErrorMessages = authSlice.actions.clearErrorMessages

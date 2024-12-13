@@ -1,11 +1,13 @@
-import SearchBar from "./SearchBar";
 import { useSelector } from "react-redux";
 
 const UserSkills = () => {
   const userSkills = useSelector((state) => state.user.currentUser.skills);
   console.log("userSkills",userSkills)
 
+  const userLoading = useSelector(state=>state.user.loading);
 
+  if(userLoading)
+    return <div>loading...</div>
 
   return (
     <div>
@@ -14,7 +16,6 @@ const UserSkills = () => {
           Skills
         </span>
 
-        <SearchBar></SearchBar>
         <div className="flex mt-4 gap-2">
         {userSkills &&
           userSkills.map((skill, index) => (

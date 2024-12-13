@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserAsync } from "../reducers/user";
+import { ColorRing } from "react-loader-spinner";
 
-const About = () => {
+const MyAbout = () => {
   const [editable, setEditable] = useState(false);
 
   const user = useSelector(state=>state.user.currentUser);
@@ -19,6 +20,24 @@ const handleUpdateInfo = ()=>{
     dispatch(updateUserAsync({id:user.id,description:info}))
     
 }
+
+const loading = useSelector(state=>state.user.loading);
+
+
+if(loading)
+  return <div>
+    <div className="flex items-center justify-center">
+          <ColorRing
+      visible={true}
+      height="80"
+      width="80"
+      ariaLabel="color-ring-loading"
+      wrapperStyle={{}}
+      wrapperClass="color-ring-wrapper"
+      colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+      />
+        </div>
+  </div>
 
   return (
     <div>
@@ -74,4 +93,4 @@ const handleUpdateInfo = ()=>{
   );
 };
 
-export default About;
+export default MyAbout;

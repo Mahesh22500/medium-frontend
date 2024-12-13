@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link,Navigate } from "react-router-dom";
 import { createUserAsync } from "../reducers/auth";
+import { clearErrorMessages } from "../reducers/auth";
 
 export default function Signup() {
   const [userInput, setUserInput] = useState({
@@ -24,6 +25,21 @@ export default function Signup() {
   const user = useSelector((state) => state.user.loggedInUser);
 
   console.log("user in signup ",user)
+
+  
+    const errorMessage = useSelector((state) => state.auth.errorMessage);
+    const loading = useSelector((state) => state.auth.loading);
+  
+    
+    
+    if (errorMessage) {
+      dispatch(clearErrorMessages())
+      setTimeout(() => {
+        alert(errorMessage);
+        
+      }, 1000);
+    }
+    if (loading) return <div>loading...</div>;
 
 
   if (user)

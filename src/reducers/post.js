@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { BASE_URL } from "../constants";
 
-const baseUrl = "https://medium-backend-alpha.vercel.app/post";
+
+
+// const baseUrl = "https://medium-backend-alpha.vercel.app/post";
+    const baseUrl  = BASE_URL + 'post'
 
 const initialState = {
   posts: [],
   userPosts:[],
+  currentPost:null,
   loading: false,
 };
 
@@ -60,6 +65,31 @@ export const getAllPostsAsync = createAsyncThunk(
   }
 );
 
+// get a post by id 
+
+export const getPostByIdAsync = createAsyncThunk(
+  "post/getPostById",
+  async (postId) => {
+
+    const queryUrl = baseUrl + '/' + postId
+    const response = await fetch(queryUrl, {
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+      },
+    });
+
+    if (response.ok) {
+      const { data } = await response.json();
+      return data;
+    } else {
+      const error = await response.json();
+
+      throw error;
+    }
+  }
+);
+
 
 // get all posts of a user 
 export const getUserPostsAsync  = createAsyncThunk(
@@ -89,9 +119,13 @@ export const getUserPostsAsync  = createAsyncThunk(
 export const updatePostAsync = createAsyncThunk(
   "post/updatePost",
   async (postInput) => {
-    const response = await fetch(baseUrl + `/:${postInput.id}`, {
+    const response = await fetch(baseUrl + `/${postInput.id}`, {
       method: "PUT",
       body: JSON.stringify(postInput),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+      },
     });
 
     if (response.ok) {
@@ -111,13 +145,17 @@ export const updatePostAsync = createAsyncThunk(
 export const deletePostAsync = createAsyncThunk(
   "post/deletePost",
   async (postId) => {
-    const response = await fetch(baseUrl + `/:${postId}`, {
+    const response = await fetch(baseUrl + `/${postId}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("jwt")}`,
+      },
     });
 
     if (response.ok) {
-      const {message} = await response.json();
-      return message;
+      const {data}=  await response.json();
+      return data;
     } else {
       const error = await response.json();
 
@@ -154,6 +192,17 @@ const postSlice = createSlice({
       .addCase(getAllPostsAsync.rejected, (state) => {
         state.loading = false;
       })
+      .addCase(getPostByIdAsync.fulfilled, (state, action) => {
+        state.currentPost = action.payload;
+        state.loading = false;
+      })
+      .addCase(getPostByIdAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getPostByIdAsync.rejected, (state) => {
+        state.loading = false;
+      })
+
 
       .addCase(getUserPostsAsync.fulfilled, (state, action) => {
         state.loading = false;
@@ -197,7 +246,7 @@ const postSlice = createSlice({
         const newUserPosts = state.userPosts.filter(
           (post) => post.id !== action.payload.id
         );
-        state.posts = newUserPosts;
+        state.userPosts = newUserPosts;
       })
       .addCase(deletePostAsync.pending, (state) => {
         state.loading = true;

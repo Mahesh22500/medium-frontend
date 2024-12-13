@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getAllPostsAsync } from "../reducers/post";
 import { getUserAsync } from "../reducers/user";
+import { ColorRing } from "react-loader-spinner";
 
 
 export default function Home() {
@@ -25,6 +26,28 @@ export default function Home() {
 
   console.log("posts fetched ", posts);
 
+  const loading = useSelector(state=>state.post.loading);
+
+
+
+
+  if(loading)
+    return <div>
+      <div className="flex items-center justify-center">
+            <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="color-ring-loading"
+        wrapperStyle={{}}
+        wrapperClass="color-ring-wrapper"
+        colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
+        />
+          </div>
+    </div>
+
+
+
   return (
     <div className="bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -43,8 +66,8 @@ export default function Home() {
               className="flex max-w-xl flex-col items-start justify-between"
             >
               <div className="flex items-center gap-x-4 text-xs">
-                <time dateTime={post.datetime} className="text-gray-500">
-                  {post.date || "Mar 16, 2020"}
+                <time dateTime={post.createdAt} className="text-gray-500">
+                  {post.createdAt.substring(0,10) || "Mar 16, 2020"}
                 </time>
                 <Link
                   to = {`/blog/${post.id}`}
@@ -72,7 +95,7 @@ export default function Home() {
                 />
                 <div className="text-sm/6">
                   <p className="font-semibold text-gray-900">
-                    <Link to={`/user-profile/${post.author.id}`}>
+                    <Link to={`/profile/${post.author.id}`}>
                       <span className="absolute inset-0" />
                       {post.author.username}
                     </Link>
